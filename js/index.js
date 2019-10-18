@@ -6,9 +6,22 @@ function enviarPesquisa(event){
         $ = document.querySelector.bind(document);
 
         let url = $('#basic-url').value;
+        let listaTermos = $('#listaTermos').value;
 
         console.log(url);
-        pesquisaJson = {"url": url, "termos": {"1":"Catu", "2": "Alagoinhas", "3": "Guanambi"}};
+
+        let arrayTermos = listaTermos.split(',');
+        let termos = {};
+
+        let len = arrayTermos.length;
+        for (i = 1; i <= len; i++){
+            termos[i] = arrayTermos[i-1].trim();
+            console.log(termos[i]);
+        }
+        
+        console.log[termos];
+
+        pesquisaJson = {"url": url, "termos": termos};
 
         
         
@@ -17,21 +30,25 @@ function enviarPesquisa(event){
 
         xhr.setRequestHeader("Content-Type", "application/json");
 
+        respostaContainer = $("#respostaContainer");
+        respostaContainer.innerHTML = "Executando pesquisa...";
+
         xhr.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == "201"){
                 resposta= JSON.parse(this.responseText);
-                respostaContainer = $("#respostaContainer");
+                //respostaContainer = $("#respostaContainer");
                 let p = document.createElement('p');
 
                 let i = 0;
 
                 for (c in resposta) {
                     if(resposta[c] == "Encontrado"){
+                        p.innerHTML += `${pesquisaJson.termos[c]} Encontrado! <br>`
                         i++;
                     }
                 }
 
-                p.innerHTML = `Foram encontrados ${((i/3) * 100)}% dos termos`;
+                p.innerHTML += `Foram encontrados ${((i/len) * 100)}% dos termos`;
                 
                 respostaContainer.appendChild(p);
                 console.log("Sucesso!");
