@@ -8,9 +8,12 @@ function enviarPesquisa(event){
         let url = $('#basic-url').value;
         let listaTermos = $('#listaTermos').value;
 
-        console.log(url);
+        console.log(listaTermos);
 
         let arrayTermos = listaTermos.split(',');
+        console.log(arrayTermos);
+        //arrayTermos = arrayTermos.isArray()? arrayTermos : [listaTermos,];
+
         let termos = {};
 
         let len = arrayTermos.length;
