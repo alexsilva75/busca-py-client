@@ -46,14 +46,14 @@ function enviarPesquisa(event){
 
                 for (c in resposta) {
                     if(resposta[c] == "Encontrado"){
-                        p.innerHTML += `${pesquisaJson.termos[c]} Encontrado! <br>`
+                        p.innerHTML += `<strong>${pesquisaJson.termos[c]}</strong> Encontrado! <br>`
                         i++;
                     }
                 }
 
                 let percentualSucesso = ((i/len) * 100);
                 percentualSucesso = parseFloat(percentualSucesso.toFixed(2));
-                p.innerHTML += `Foram encontrados ${percentualSucesso}% dos termos`;
+                p.innerHTML += `Foram encontrados <strong>${percentualSucesso}%</strong> dos termos`;
                 
                 respostaContainer.appendChild(p);
                 console.log("Sucesso!");
