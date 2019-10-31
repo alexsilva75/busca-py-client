@@ -46,7 +46,7 @@ function enviarPesquisa(event){
 
                 for (c in resposta) {
                     if(resposta[c] == "Encontrado"){
-                        p.innerHTML += `<p><strong>${pesquisaJson.termos[c]}</strong> Encontrado! </p>`
+                        p.innerHTML += `<p><strong>${pesquisaJson.termos[c]}</strong> Encontrado! </p>` 
                         i++;
                     }
                 }
