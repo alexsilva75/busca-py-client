@@ -51,7 +51,9 @@ function enviarPesquisa(event){
                     }
                 }
 
-                p.innerHTML += `Foram encontrados ${((i/len) * 100)}% dos termos`;
+                let percentualSucesso = ((i/len) * 100);
+                percentualSucesso = parseFloat(percentualSucesso.toFixed(2));
+                p.innerHTML += `Foram encontrados ${percentualSucesso}% dos termos`;
                 
                 respostaContainer.appendChild(p);
                 console.log("Sucesso!");
