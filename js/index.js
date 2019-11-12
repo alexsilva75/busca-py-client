@@ -39,6 +39,7 @@ function enviarPesquisa(event){
         xhr.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == "201"){
                 resposta= JSON.parse(this.responseText);
+                console.log(resposta.links);
                 //respostaContainer = $("#respostaContainer");
                 let p = document.createElement('p');
 
@@ -46,7 +47,8 @@ function enviarPesquisa(event){
 
                 for (c in resposta) {
                     if(resposta[c] == "Encontrado"){
-                        p.innerHTML += `<p><strong>${pesquisaJson.termos[c]}</strong> Encontrado! </p>` 
+                        p.innerHTML += `<p><strong>${pesquisaJson.termos[c]}</strong> 
+                        Encontrado em <a href="${url}" target="_blank">${url} </a>! </p>` 
                         i++;
                     }
                 }
