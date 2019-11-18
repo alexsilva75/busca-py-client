@@ -26,17 +26,53 @@ function enviarPesquisa(event){
 
         http.obtemLinks(url).then( links =>{            
 
-            pesquisaURL(url,termos, qtdEncontrada);
+            let termosEncontrados = pesquisaURL(url,termos, qtdEncontrada);
+
+            termosEncontrados.forEach(k =>{
+                delete termos[k];
+            });
 
             links.forEach(link => {
-                if(link.indexOf(url) != -1){
-                   let termosEncontrados = pesquisaURL(link,termos, qtdEncontrada);
+                
+                   /*termosEncontrados = pesquisaURL(link,termos, qtdEncontrada);
 
                    termosEncontrados.forEach(k =>{
                        delete termos[k];
-                   })
-                }//fim if
-            })
+                   });*/
+
+                   new Promise((resolve, reject) => {
+                        http.post(link, termos)
+                            .then( resposta => {
+                                let p = document.createElement('p');            
+
+                                for (c in resposta) {
+                                    if(resposta[c] == "Encontrado"){
+
+                                        p.innerHTML += `<p><strong>${termos[c]}</strong> 
+                                        Encontrado em <a href="${url}" target="_blank">${url} </a>! </p>`;
+                                        console.log(`Removendo ${termos[c]}`); 
+                                        
+                                        termosEncontrados.push(c);
+                                        
+                                        console.log(`Quantidade de termos: ${termos.length}`);
+                                        
+                                    }//fim if
+                                }//fim for     
+                                
+                                respostaContainer.appendChild(p); 
+
+                                resolve("Aqui retorna a quantidade encontrada");
+                            }
+
+
+                        );// fim then
+                   
+                   
+                    }).then(umRetorno => {
+                        console.log(`Meu retorno: ${umRetorno}`);
+                    });//fim Promise
+                
+            });//fim forEach
 
         } ).catch(error => {
                 console.log("Houve um"+error);    
@@ -86,7 +122,7 @@ function pesquisaURL(url, termos, i){
                         console.log(`Quantidade de termos: ${termos.length}`);
                         i++;
                     }
-                }      
+                }     
                 
                 respostaContainer.appendChild(p);                
               
