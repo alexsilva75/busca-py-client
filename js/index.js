@@ -1,7 +1,7 @@
 
 function enviarPesquisa(event){
     try{
-        console.log("Enviando pesquisa!");
+        
         event.preventDefault();
         $ = document.querySelector.bind(document);
 
@@ -21,7 +21,9 @@ function enviarPesquisa(event){
         
         statusDiv = $("#status");
 
-        respostaContainer.innerHTML += "<br>Executando pesquisa...";
+        statusDiv.innerHTML ="Enviando pesquisa, aguarde...";
+
+        respostaContainer.innerHTML = "";
 
         http = new HttpService();      
 
@@ -30,17 +32,15 @@ function enviarPesquisa(event){
         http.obtemLinks(url).then( links => {
             
             new Promise( (resolve, reject) =>{
-           // links =>{            
-
+           
             links.unshift(url);                     
             
             let qtdLinks = links.length;
             let qtdLinksPesquisados = 0;
 
-            links.forEach(link => {
-                    
+            links.forEach(link => {                    
 
-                    console.log(`Pesquisando em: ${link}`)
+                    console.log(`Pesquisando em: ${link}`);
                     
                         http.post(link, termos)
                             .then( resposta => {
@@ -68,21 +68,18 @@ function enviarPesquisa(event){
                             
                         let percentDone = (qtdLinksPesquisados/qtdLinks) * 100;
                         console.log(`Links pesquisados: ${qtdLinksPesquisados}, total de links: ${qtdLinks}`);
-                        statusDiv.innerHTML = `${parseFloat(percentDone.toFixed(2))}% Concluido.`;
+                        statusDiv.innerHTML = `Processando: ${parseFloat(percentDone.toFixed(2))}% Concluído.`;
 
                         if(percentDone == 100){
                             let size = Object.keys(termos).length;
                             console.log(`Tamanho termos{}: ${size}`);
-                            percent = ( size / len ) * 100;
-                            statusDiv.innerHTML += `<br> Foram encontrados ${parseFloat(percent.toFixed(2))}% dos termos.`
+                            percent = ( (len - size) / len ) * 100;
+                            statusDiv.innerHTML += `<br> Foram encontrados ${parseFloat(percent.toFixed(2))}% dos termos.`;
                         }//fim if
                     });
                     })//fim forEach
                 
-            });
-
-            
-      
+            });     
         
     }).catch(error => {
                 console.log("Houve um"+error);    
