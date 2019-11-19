@@ -18,63 +18,73 @@ function enviarPesquisa(event){
         }//fim for
 
         respostaContainer = $("#respostaContainer");
+        
+        statusDiv = $("#status");
+
         respostaContainer.innerHTML += "<br>Executando pesquisa...";
 
         http = new HttpService();      
 
-        let qtdEncontrada = 0;
+        let contagem = 0;
 
-        http.obtemLinks(url).then( links =>{            
+        http.obtemLinks(url).then( links => {
+            
+            new Promise( (resolve, reject) =>{
+           // links =>{            
 
-            let termosEncontrados = pesquisaURL(url,termos, qtdEncontrada);
-
-            termosEncontrados.forEach(k =>{
-                delete termos[k];
-            });
+            links.unshift(url);                     
+            
+            let qtdLinks = links.length;
+            let qtdLinksPesquisados = 0;
 
             links.forEach(link => {
-                
-                   /*termosEncontrados = pesquisaURL(link,termos, qtdEncontrada);
+                    
 
-                   termosEncontrados.forEach(k =>{
-                       delete termos[k];
-                   });*/
-
-                   new Promise((resolve, reject) => {
+                    console.log(`Pesquisando em: ${link}`)
+                    
                         http.post(link, termos)
                             .then( resposta => {
+                                qtdLinksPesquisados++;
                                 let p = document.createElement('p');            
-
+                                
                                 for (c in resposta) {
-                                    if(resposta[c] == "Encontrado"){
+                                    if((resposta[c] == "Encontrado") ){
 
-                                        p.innerHTML += `<p><strong>${termos[c]}</strong> 
-                                        Encontrado em <a href="${url}" target="_blank">${url} </a>! </p>`;
-                                        console.log(`Removendo ${termos[c]}`); 
+                                        p.innerHTML += `<p><strong>${arrayTermos[c-1]}</strong> 
+                                        Encontrado em <a href="${link}" target="_blank">${link} </a>! </p>`;
+                                        console.log(`Removendo ${termos[c]}`);                                        
                                         
-                                        termosEncontrados.push(c);
-                                        
-                                        console.log(`Quantidade de termos: ${termos.length}`);
+                                        delete termos[c];
+                                        console.log(`Quantidade de termos: ${(++contagem)}`);
                                         
                                     }//fim if
                                 }//fim for     
                                 
                                 respostaContainer.appendChild(p); 
+                                return qtdLinksPesquisados;
+                            }//fim then
 
-                                resolve("Aqui retorna a quantidade encontrada");
-                            }
+                        ).then( qtdLinksPesquisados => {
+                            
+                        let percentDone = (qtdLinksPesquisados/qtdLinks) * 100;
+                        console.log(`Links pesquisados: ${qtdLinksPesquisados}, total de links: ${qtdLinks}`);
+                        statusDiv.innerHTML = `${parseFloat(percentDone.toFixed(2))}% Concluido.`;
 
-
-                        );// fim then
-                   
-                   
-                    }).then(umRetorno => {
-                        console.log(`Meu retorno: ${umRetorno}`);
-                    });//fim Promise
+                        if(percentDone == 100){
+                            let size = Object.keys(termos).length;
+                            console.log(`Tamanho termos{}: ${size}`);
+                            percent = ( size / len ) * 100;
+                            statusDiv.innerHTML += `<br> Foram encontrados ${parseFloat(percent.toFixed(2))}% dos termos.`
+                        }//fim if
+                    });
+                    })//fim forEach
                 
-            });//fim forEach
+            });
 
-        } ).catch(error => {
+            
+      
+        
+    }).catch(error => {
                 console.log("Houve um"+error);    
                 
             });
@@ -106,8 +116,7 @@ function pesquisaURL(url, termos, i){
         xhr.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == "201"){
                 resposta= JSON.parse(this.responseText);
-                console.log(resposta.links);
-                
+                                
                 let p = document.createElement('p');            
 
                 for (c in resposta) {
