@@ -1,18 +1,31 @@
 
 function enviarPesquisa(event){
+    $ = document.querySelector.bind(document);
+    statusDiv = $("#status");
+    statusDiv.setAttribute("class", "alert");
     try{
         
         event.preventDefault();
-        $ = document.querySelector.bind(document);
+        
 
         let url = $('#basic-url').value;
         let listaTermos = $('#listaTermos').value;
        
+       
+        
         let arrayTermos = listaTermos.split(',');
        
+
+
         let termos = {};
 
         let len = arrayTermos.length;
+
+        if(len > 100){
+            throw new Error("Não é possível pesquisar mais de 100 termos.")
+        }
+
+
         for (x = 1; x <= len;x++){
             termos[x] = arrayTermos[x-1].trim();            
         }//fim for
@@ -20,6 +33,7 @@ function enviarPesquisa(event){
         respostaContainer = $("#respostaContainer");
         
         statusDiv = $("#status");
+
 
         statusDiv.innerHTML ="Enviando pesquisa, aguarde...";
 
@@ -37,6 +51,11 @@ function enviarPesquisa(event){
             
             let qtdLinks = links.length;
             let qtdLinksPesquisados = 0;
+
+            statusDiv.classList.add( "alert");
+            statusDiv.classList.add("alert-primary");
+
+            statusDiv.setAttribute("role", "alert");
 
             links.forEach(link => {                    
 
@@ -75,6 +94,9 @@ function enviarPesquisa(event){
                             console.log(`Tamanho termos{}: ${size}`);
                             percent = ( (len - size) / len ) * 100;
                             statusDiv.innerHTML += `<br> Foram encontrados ${parseFloat(percent.toFixed(2))}% dos termos.`;
+
+                            statusDiv.classList.remove("alert-primary");
+                            statusDiv.classList.add("alert-success");
                         }//fim if
                     });
                     })//fim forEach
@@ -86,8 +108,11 @@ function enviarPesquisa(event){
                 
             });
 
-    }catch(Error){
-        console.log("Erro."+Error);
+    }catch(error){
+        console.log("Erro."+error);
+        statusDiv.setAttribute("class", "alert");
+        statusDiv.classList.add("alert-danger");
+        statusDiv.innerHTML = error.message;
     }
 
     console.log("The end!");
@@ -96,7 +121,7 @@ function enviarPesquisa(event){
 
 
 
-function pesquisaURL(url, termos, i){
+/*function pesquisaURL(url, termos, i){
 
         console.log(`Pesquisando em: ${url}`);
         pesquisaJson = {"url": url, "termos": termos};
@@ -143,10 +168,10 @@ function pesquisaURL(url, termos, i){
     }
 
 
-}
+}*/
 
 
-function removerTermo(termos, termo){
+/*function removerTermo(termos, termo){
     let len = termos.length;
 
     console.log(`Removendo o termo: ${termo}`);
@@ -157,7 +182,7 @@ function removerTermo(termos, termo){
         }
     }
 }
-
+*/
 /*
 function enviarPesquisa(event){
     try{
