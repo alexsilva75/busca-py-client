@@ -9,13 +9,14 @@ function enviarPesquisa(event){
         
 
         let url = $('#basic-url').value;
-        let listaTermos = $('#listaTermos').value;
-       
-       
+
+        if( !url.startsWith('http://') && !url.startsWith('https://')){
+            throw new Error("A URL deve iniciar com 'http://' ou 'https://'!");
+        }
+
+        let listaTermos = $('#listaTermos').value;      
         
         let arrayTermos = listaTermos.split(',');
-       
-
 
         let termos = {};
 
@@ -23,7 +24,7 @@ function enviarPesquisa(event){
 
         if(len > 100){
             throw new Error("Não é possível pesquisar mais de 100 termos.")
-        }
+        }//fim if
 
 
         for (x = 1; x <= len;x++){
@@ -104,7 +105,7 @@ function enviarPesquisa(event){
             });     
         
     }).catch(error => {
-                console.log("Houve um"+error);    
+                throw new Error("Ocorreu um erro: "+error);    
                 
             });
 

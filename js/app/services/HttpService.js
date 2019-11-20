@@ -11,7 +11,7 @@ class HttpService{
                     xhr.open('POST', "https://busca-termos.herokuapp.com/pesquisa", true);
         
                     xhr.setRequestHeader("Content-Type", "application/json");
-
+                    
                     xhr.onreadystatechange = function(){
                         if(this.readyState == 4 && this.status == "201"){
                             let resposta= JSON.parse(this.responseText);
@@ -23,9 +23,12 @@ class HttpService{
                         }//else               
                 
                     }//fim xhr       
+                    xhr.timeout = 60000;
+                    xhr.ontimeout = () => { reject("Erro ao realizar pesquisa: a página demorou muito para responder. O servidor pode estar indisponível ou a URL pode estar incorreta."); }
+
                     xhr.send(JSON.stringify(pesquisaJson));
-                }catch(Error){
-                    reject(xhr.responseText);
+                }catch(error){
+                    throw new Error(error.message);
                 }
 
             
@@ -45,9 +48,9 @@ class HttpService{
         
                 let xhr = new XMLHttpRequest();
                 xhr.open('POST', "https://busca-termos.herokuapp.com/links", true);
-    
+  
                 xhr.setRequestHeader("Content-Type", "application/json");
-
+               
                 xhr.onreadystatechange = function(){
                     if(this.readyState == 4 && this.status == "201"){
                         let resposta= JSON.parse(this.responseText);
@@ -60,9 +63,13 @@ class HttpService{
                     }//else               
             
                 }//fim xhr       
+
+                xhr.timeout = 60000;
+                xhr.ontimeout =  () => { reject("Erro ao obter links: a página demorou muito para responder. O servidor pode estar indisponível ou a URL pode estar incorreta."); }
+
                 xhr.send(JSON.stringify(pesquisaJson));
-            }catch(Error){
-                reject(xhr.responseText);
+            }catch(error){
+                throw new Error(error.message);
             }
 
         });//fim Promise

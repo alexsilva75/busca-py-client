@@ -1,27 +1,43 @@
 <!doctype html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
     <script src="js/app/services/HttpService.js"></script>
     <script src="js/index.js"></script>
     <link rel="stylesheet" type="text/css" href="js/lib/bootstrap/bootstrap-4.3.1-dist/css/bootstrap.css">
-    <script src="js/lib/bootstrap/bootstrap-4.3.1-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     
     <title>Pesquisa textual</title>
 </head>
 <body>
     <main class="container">
-        <h1>Informe a URL a ser pesquisada.</h1>
-        <form onsubmit="enviarPesquisa(event)">
-            
-                <div class="form-group">
-                    <label for="basic-url">Esta aplicação realiza uma pesquisa textual no site apontado pela URL fornecida. Os links presentes no endereço da URL também são varridos. A pesquisa é feita buscando pelos termos descritos no campo 'Informe os termos a serem pesquisados separados por vírgulas:'. Também é possível substituir os termos já inseridos ou ainda adicionar outros a serem pesquisados, lembrando que os termos informados devem ser separados por vírgulas. É possível pesquisar por até 100 termos ou inserir até 1000 caracteres no campo em questão.</label>
-                    <input maxlength="2048" id="basic-url" class="form-control form-control-lg" type="text" id="basic-url" name="url" placeholder="http://exemplo.com/">
-                </div>
-                <div class="form-group">
-                    <label for="listaTermos">Informe os termos a serem pesquisados separados por vírgulas:</label>
-                    <textarea maxlength="1000" id="listaTermos" rows="5" class="form-control form-control-lg" id="listaTermos" name="url">publicidade, divulgação de informações, controle social, transparência, informação, competências, estrutura organizacional, endereços, telefones, horários de atendimentos, repasses financeiros, transferências de recursos financeiros, despesas, procedimentos licitatórios, programas, projetos, respostas a perguntas mais frequentes, pesquisa de conteúdo, gravação de relatórios em diversos formatos, automatização, autenticidade das informações, informações atualizadas, integridade das informações, acessibilidade, acesso à informação, restrição ao acesso à informação, Programas de extensão, Programas de pesquisa, Projetos de extensão, Projetos de pesquisa, cursos de extensão</textarea>                </div>
-                <input class="btn btn-primary" type="submit" value="Pesquisar">
-        </form>
-        <div  id="status"></div>
+        
+
+        <div class="container">
+            <h1>Informe a URL a ser pesquisada.</h1>
+            <form onsubmit="enviarPesquisa(event)">
+                
+                    <div class="form-group">
+                        <label for="basic-url">Esta aplicação realiza uma pesquisa textual no site apontado pela URL fornecida. 
+                            Os links presentes no endereço da URL também são varridos. 
+                            A pesquisa é feita buscando pelos termos descritos no campo 'Informe os termos a serem pesquisados separados por vírgulas:'.
+                             Também é possível substituir os termos já inseridos ou ainda adicionar outros a serem pesquisados, 
+                             lembrando que os termos informados devem ser separados por vírgulas.
+                              É possível pesquisar por até 100 termos ou inserir até 1000 caracteres no campo em questão. A pesquisa é feita basicamente em links e menus, procurando encontrar tópicos que sejam especificamente cobertos pelo site pesquisado.</label>
+                        <input maxlength="2048" id="basic-url" class="form-control form-control-lg" type="text" id="basic-url" name="url" placeholder="http://exemplo.com/">
+                    </div>
+                    <div class="form-group">
+                        <label for="listaTermos">Informe os termos a serem pesquisados separados por vírgulas:</label>
+                        <textarea maxlength="1000" id="listaTermos" rows="5" class="form-control form-control-lg" id="listaTermos" name="url">publicidade, divulgação de informações, controle social, transparência, informação, competências, estrutura organizacional, endereços, telefones, horários de atendimentos, repasses financeiros, transferências de recursos financeiros, despesas, procedimentos licitatórios, programas, projetos, respostas a perguntas mais frequentes, pesquisa de conteúdo, gravação de relatórios em diversos formatos, automatização, autenticidade das informações, informações atualizadas, integridade das informações, acessibilidade, acesso à informação, restrição ao acesso à informação, Programas de extensão, Programas de pesquisa, Projetos de extensão, Projetos de pesquisa, cursos de extensão</textarea>                </div>
+                    <input class="btn btn-primary" type="submit" value="Pesquisar">
+            </form>
+        </div>
+        
+        <div class="row">
+            <div class="col">
+                <div  id="status" style="margin-top:18px;"></div>
+            </div>
+        </div>
         <div id="respostaContainer">
             
         </div>
