@@ -23,9 +23,9 @@ class HttpService{
                         }//else               
                 
                     }//fim xhr       
-                    xhr.timeout = 60000;
+                    /*xhr.timeout = 120000;
                     xhr.ontimeout = () => { reject("Erro ao realizar pesquisa: a página demorou muito para responder. O servidor pode estar indisponível ou a URL pode estar incorreta."); }
-
+*/
                     xhr.send(JSON.stringify(pesquisaJson));
                 }catch(error){
                     throw new Error(error.message);
@@ -64,9 +64,9 @@ class HttpService{
             
                 }//fim xhr       
 
-                xhr.timeout = 60000;
+                /*xhr.timeout = 120000;
                 xhr.ontimeout =  () => { reject("Erro ao obter links: a página demorou muito para responder. O servidor pode estar indisponível ou a URL pode estar incorreta."); }
-
+*/
                 xhr.send(JSON.stringify(pesquisaJson));
             }catch(error){
                 throw new Error(error.message);
