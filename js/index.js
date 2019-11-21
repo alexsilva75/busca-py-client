@@ -99,13 +99,24 @@ function enviarPesquisa(event){
                             statusDiv.classList.remove("alert-primary");
                             statusDiv.classList.add("alert-success");
                         }//fim if
-                    });
+                    }).catch( error => {
+                        console.log("Erro."+error);
+                        statusDiv.setAttribute("class", "alert");
+                        statusDiv.classList.add("alert-danger");
+                        statusDiv.innerHTML = error; 
+                        return;
+                    }
+
+                    );
                     })//fim forEach
                 
             });     
         
     }).catch(error => {
-                throw new Error("Ocorreu um erro: "+error);    
+                console.log("Erro."+error);
+                statusDiv.setAttribute("class", "alert");
+                statusDiv.classList.add("alert-danger");
+                statusDiv.innerHTML = error;   
                 
             });
 
