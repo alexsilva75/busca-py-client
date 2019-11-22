@@ -114,7 +114,7 @@ function enviarPesquisa(event){
                             
                             encontradosContainer.classList.add("alert");
                             encontradosContainer.classList.add("alert-secondary");
-                            encontradosContainer.setAttribute("class","alert");
+                            encontradosContainer.setAttribute("role","alert");
 
                             encontradosContainer.appendChild(h2);
                             let ol = document.createElement("ol");
