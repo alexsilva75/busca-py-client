@@ -2,6 +2,7 @@
 function enviarPesquisa(event){
     $ = document.querySelector.bind(document);
     statusDiv = $("#status");
+    encontradosContainer = $("#encontradosContainer");
     statusDiv.setAttribute("class", "alert");
     try{
         
@@ -13,6 +14,10 @@ function enviarPesquisa(event){
         if( !url.startsWith('http://') && !url.startsWith('https://')){
             throw new Error("A URL deve iniciar com 'http://' ou 'https://'!");
         }
+
+        let encontrados = [];
+
+        
 
         let listaTermos = $('#listaTermos').value;      
         
@@ -72,7 +77,10 @@ function enviarPesquisa(event){
 
                                         p.innerHTML += `<p><strong>${arrayTermos[c-1]}</strong> 
                                         Encontrado em <a href="${link}" target="_blank">${link} </a>! </p>`;
-                                        console.log(`Removendo ${termos[c]}`);                                        
+                                        console.log(`Removendo ${termos[c]}`);   
+
+                                        if(termos[c])
+                                            encontrados.push(termos[c]);                                     
                                         
                                         delete termos[c];
                                         console.log(`Quantidade de termos: ${(++contagem)}`);
@@ -98,6 +106,26 @@ function enviarPesquisa(event){
 
                             statusDiv.classList.remove("alert-primary");
                             statusDiv.classList.add("alert-success");
+
+                            let h2 = document.createElement("h2");
+
+                            h2.innerHTML = "Termos encontrados:";
+                            
+                            encontradosContainer.classList.add("alert");
+                            encontradosContainer.classList.add("alert-secondary");
+                            encontradosContainer.setAttribute("class","alert");
+
+                            encontradosContainer.appendChild(h2);
+                            let ol = document.createElement("ol");
+                            encontradosContainer.appendChild(ol);
+                            encontrados.forEach(item => {
+                                let li = document.createElement("li");
+                                li.innerHTML = item;
+                                ol.appendChild(li);
+                                
+                            });
+
+
                         }//fim if
                     }).catch( error => {
                         console.log("Erro."+error);
