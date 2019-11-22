@@ -3,6 +3,7 @@ function enviarPesquisa(event){
     $ = document.querySelector.bind(document);
     statusDiv = $("#status");
     encontradosContainer = $("#encontradosContainer");
+    encontradosContainer.innerHTML = "";
     statusDiv.setAttribute("class", "alert");
     try{
         
