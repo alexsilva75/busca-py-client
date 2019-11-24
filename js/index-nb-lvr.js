@@ -2,8 +2,6 @@
 function enviarPesquisa(event){
     $ = document.querySelector.bind(document);
     statusDiv = $("#status");
-    encontradosContainer = $("#encontradosContainer");
-    encontradosContainer.innerHTML = "";
     statusDiv.setAttribute("class", "alert");
     try{
         
@@ -15,10 +13,6 @@ function enviarPesquisa(event){
         if( !url.startsWith('http://') && !url.startsWith('https://')){
             throw new Error("A URL deve iniciar com 'http://' ou 'https://'!");
         }
-
-        let encontrados = [];
-
-        
 
         let listaTermos = $('#listaTermos').value;      
         
@@ -67,7 +61,7 @@ function enviarPesquisa(event){
             links.forEach(link => {                    
 
                     console.log(`Pesquisando em: ${link}`);
-                        
+                    
                         http.post(link, termos)
                             .then( resposta => {
                                 qtdLinksPesquisados++;
@@ -78,10 +72,7 @@ function enviarPesquisa(event){
 
                                         p.innerHTML += `<p><strong>${arrayTermos[c-1]}</strong> 
                                         Encontrado em <a href="${link}" target="_blank">${link} </a>! </p>`;
-                                        console.log(`Removendo ${termos[c]}`);   
-
-                                        if(termos[c])
-                                            encontrados.push(termos[c]);                                     
+                                        console.log(`Removendo ${termos[c]}`);                                        
                                         
                                         delete termos[c];
                                         console.log(`Quantidade de termos: ${(++contagem)}`);
@@ -107,51 +98,21 @@ function enviarPesquisa(event){
 
                             statusDiv.classList.remove("alert-primary");
                             statusDiv.classList.add("alert-success");
-
-                            let h2 = document.createElement("h2");
-
-                            h2.innerHTML = "Termos encontrados:";
-                            
-                            encontradosContainer.classList.add("alert");
-                            encontradosContainer.classList.add("alert-secondary");
-                            encontradosContainer.setAttribute("role","alert");
-
-                            encontradosContainer.appendChild(h2);
-                            let ol = document.createElement("ol");
-                            encontradosContainer.appendChild(ol);
-                            encontrados.forEach(item => {
-                                let li = document.createElement("li");
-                                li.innerHTML = item;
-                                ol.appendChild(li);
-                                
-                            });
-
-
                         }//fim if
-
-                        return qtdLinksPesquisados;
-                    }).catch( error => {
-                        qtdLinksPesquisados++;
-                        console.log("Erro."+error);
-                        let p = document.createElement('p');
-                        p.setAttribute("class", "alert");
-                        p.setAttribute("role", "alert");
-                        p.classList.add("alert-danger");
-                        p.innerHTML = error; 
+                    }).catch( erro =>{
+                        console.log("Erro varrendo a URL:"+link+erro);
+                        let p = document.createElement('p');  
+                        p.innerHTML = "Erro varrendo a URL:"+link+erro;
                         respostaContainer.appendChild(p);
-                        return;
-                    }
 
-                    );
+                    });//fim catch
+
                     })//fim forEach
                 
             });     
         
     }).catch(error => {
-                console.log("Erro."+error);
-                statusDiv.setAttribute("class", "alert");
-                statusDiv.classList.add("alert-danger");
-                statusDiv.innerHTML = error;   
+                throw new Error("Ocorreu um erro: "+error);    
                 
             });
 
