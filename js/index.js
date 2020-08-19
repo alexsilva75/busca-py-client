@@ -74,10 +74,11 @@ function enviarPesquisa(event){
                                 let p = document.createElement('p');            
                                 
                                 for (c in resposta) {
-                                    if((resposta[c] == "Encontrado") ){
+                                    if((resposta[c]['status'] == "Encontrado") ){
 
                                         p.innerHTML += `<p><strong>${arrayTermos[c-1]}</strong> 
-                                        Encontrado em <a href="${link}" target="_blank">${link} </a>! </p>`;
+                                        Encontrado em <a href="${link}" target="_blank">${link} </a>! </p>
+                                        <strong>Trecho:</strong>${resposta[c]['snippet']} <br/><hr/>`;
                                         console.log(`Removendo ${termos[c]}`);   
 
                                         if(termos[c])

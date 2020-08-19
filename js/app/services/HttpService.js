@@ -15,9 +15,11 @@ class HttpService{
                     xhr.onreadystatechange = function(){
                         if(this.readyState == 4 && this.status == "201"){
                             let resposta= JSON.parse(this.responseText);
+                            console.log('Response Text: ', this.responseText)
                             resolve(resposta);
 
                         }else if(this.readyState == 4 && this.status != "201"){
+                            console.log('Response Text: ', this.responseText)
                             console.log(`Status HTTP: ${this.status}`);
                             reject(`Erro ao realizar pesquisa em ${url}: o servidor pode estar indisponível ou a URL pode estar incorreta.`);
                             //console.log(xhr.responseText);
